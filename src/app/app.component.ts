@@ -19,6 +19,7 @@ export class AppComponent implements AfterViewInit {
     return element._elementRef.nativeElement;
   }
 
+  // Message should appear only when Button is clicked with Shift pressed
   ngAfterViewInit(): void {
     fromEvent(AppComponent.getNativeElement(this.btn), 'click').subscribe(
       message => this.message = 'Beast Mode Activated!!!'
