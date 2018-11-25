@@ -7,6 +7,12 @@ import {
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { MatButton } from '@angular/material';
+import { map, scan, startWith, tap } from 'rxjs/operators';
+
+export interface Position {
+  x: number;
+  y: number;
+}
 
 @Component({
   selector: 'app-root',
@@ -30,10 +36,16 @@ export class AppComponent implements OnInit {
     return element._elementRef.nativeElement;
   }
 
+  // Move the ball to the right
   ngOnInit(): void {
     fromEvent(AppComponent.getNativeElement(this.right), 'click')
-      .subscribe(
-      position => (this.position = position)
-    );
+      .pipe(
+        map(e => 10),
+        startWith({ x: 400, y: 400 }),
+        scan((acc: any, curr) => {
+          return Object.assign({}, acc, { x: acc.x + curr });
+        })
+      )
+      .subscribe(position => (this.position = position));
   }
 }
